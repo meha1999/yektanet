@@ -1,0 +1,45 @@
+.App {
+  text-align: center;
+  direction: rtl;
+}
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+th {
+  background-color: #b6e214;
+  text-align: center;
+  border: 1px solid #a7a6a6;
+  padding: 8px;
+}
+td {
+  border: 1px solid #a7a6a6;
+  text-align: center;
+  padding: 8px;
+  margin: auto;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+.table-wrapper {
+  width: 100%;
+  background-color: rgb(219, 216, 216);
+  gap: 20px;
+  display: flex;
+  flex-direction: column;
+}
+.table-wrapper .sorting-wrapper {
+  display: flex;
+  justify-content: space-around;
+}
+.table-wrapper .sorting-wrapper .input-sort {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+.table-wrapper .sorting-wrapper .input-sort label {
+  font-size: 11px;
+}
