@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
 const Table = ({ data }) => {
   const observer = useRef();
@@ -19,6 +19,11 @@ const Table = ({ data }) => {
     if (node) observer.current.observe(node);
   });
 
+  useEffect(() => {
+    setnewData(data?.slice(0, 50));
+    setpageNumber(1);
+  }, [data]);
+  
   return (
     <table className="table">
       <thead>

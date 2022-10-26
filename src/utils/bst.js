@@ -19,49 +19,39 @@ class Bst {
     }
     let current = this.root;
     while (current) {
-      if (data.date < current.data.date) {
-        if (!current.left) {
-          current.left = node;
-          break;
-        }
-        current = current.left;
-      } else {
+      if (data.date > current.data.date) {
         if (!current.right) {
           current.right = node;
           break;
         }
         current = current.right;
+      } else {
+        if (!current.left) {
+          current.left = node;
+          break;
+        }
+        current = current.left;
       }
     }
   }
 
-  find(data,rootData) {
+  find(data, rootData) {
     if (!rootData) return null;
     let current = rootData;
     let finalData = [];
     while (current) {
-      if (data === current.data.date) {
+      if (data === current.data.date || current.data.date.includes(data)) {
         finalData.push(current.data);
       }
 
-      if (current.right && data < current.data.date) {
-        current = current.left;
-      } else {
+      if (current.right && data > current.data.date) {
         current = current.right;
+      } else {
+        current = current.left;
       }
     }
 
     return finalData;
-  }
-
-  contains(data) {
-    const found = this.find(data);
-
-    if (found) {
-      return true;
-    }
-
-    return false;
   }
 }
 

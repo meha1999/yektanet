@@ -2,29 +2,32 @@ import React, { useEffect, useState } from "react";
 
 import thedata from "../data/data.json";
 import Bst from "../utils/bst";
+import { quickSort } from "../utils/quickSort";
 import Table from "./Table";
 
 const TableWrapper = () => {
   const [data, setData] = useState(thedata);
-  const [search, setSearch] = useState("");
-  const [search2, setSearch2] = useState("");
+  const [dateSearch, setDateSearch] = useState("");
+  const [bstData, setBstData] = useState({});
 
-  const bstData = new Bst();
+  const bst = new Bst();
 
   useEffect(() => {
-    thedata.map((item) => {
-      bstData.insert(item);
-    });
+    thedata.map((item) => bst.insert(item));
   }, []);
 
   useEffect(() => {
-    search && setData(bstData.find(search, search2));
-  }, [search]);
+    dateSearch && setData(bst.find(dateSearch, bstData));
+  }, [dateSearch]);
 
   useEffect(() => {
-    bstData.root && setSearch2(bstData.root);
-  }, [bstData.root]);
+    bst.root && setBstData(bst.root);
+  }, [bst.root]);
 
+  useEffect(() => {
+    console.log(quickSort(data, "name", 0, data.length-1));
+  }, []);
+  
   return (
     <div className="table-wrapper">
       <div className="sorting-wrapper">
@@ -37,7 +40,7 @@ const TableWrapper = () => {
           <input
             type={"text"}
             id="timestamp"
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => setDateSearch(e.target.value)}
           />
         </div>
         <div className="input-sort">
