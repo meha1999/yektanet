@@ -9,6 +9,7 @@ const TableWrapper = () => {
   const [data, setData] = useState(thedata);
   const [dateSearch, setDateSearch] = useState("");
   const [bstData, setBstData] = useState({});
+  const [updated, setUpdated] = useState(false);
 
   const bst = new Bst();
 
@@ -18,16 +19,13 @@ const TableWrapper = () => {
 
   useEffect(() => {
     dateSearch && setData(bst.find(dateSearch, bstData));
+    !dateSearch && setData(thedata);
   }, [dateSearch]);
 
   useEffect(() => {
     bst.root && setBstData(bst.root);
   }, [bst.root]);
 
-  useEffect(() => {
-    console.log(quickSort(data, "name", 0, data.length-1));
-  }, []);
-  
   return (
     <div className="table-wrapper">
       <div className="sorting-wrapper">
@@ -53,7 +51,7 @@ const TableWrapper = () => {
         </div>
       </div>
       <div>
-        <Table data={data} />
+        <Table data={data} setData={setData} />
       </div>
     </div>
   );
