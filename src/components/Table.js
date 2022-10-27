@@ -14,6 +14,9 @@ const Table = ({ data, setData }) => {
     old_value: "dec",
     new_value: "dec",
   });
+  const [bookmarks, setBookmarks] = useState(
+    JSON.parse(localStorage.getItem("Bookmarks")) || []
+  );
 
   const lastBookElementRef = useCallback((node) => {
     if (observer.current) observer.current.disconnect();
@@ -35,20 +38,28 @@ const Table = ({ data, setData }) => {
     setIsUpdating(false);
   }, [data, isUpdating, order]);
 
-  const handleSort = (feild) => {
+  const handleSort = (field) => {
     setIsUpdating(false);
     setData(
       quickSort(
         data,
-        feild,
+        field,
         0,
         data.length - 1,
-        order[feild] === "asc" ? "dec" : "asc"
+        order[field] === "asc" ? "dec" : "asc"
       )
     );
-    order[feild] = order[feild] === "asc" ? "dec" : "asc";
+    order[field] = order[field] === "asc" ? "dec" : "asc";
     setOrder(order);
     setIsUpdating(true);
+  };
+
+  const handleBookmark = (id) => {
+    const finalBookmarks = bookmarks.includes(id)
+      ? bookmarks.filter((item) => item !== id)
+      : [...bookmarks, id];
+    localStorage.setItem("Bookmarks", JSON.stringify(finalBookmarks));
+    setBookmarks(finalBookmarks);
   };
 
   return (
@@ -61,6 +72,7 @@ const Table = ({ data, setData }) => {
           <th onClick={() => handleSort("field")}>فیلد</th>
           <th onClick={() => handleSort("old_value")}>مقدار قدیم</th>
           <th onClick={() => handleSort("new_value")}>مقدار جدید</th>
+          <th onClick={() => handleSort("new_value")}>نشانه گزاری</th>
         </tr>
       </thead>
       <tbody>
@@ -72,6 +84,11 @@ const Table = ({ data, setData }) => {
             <td>{item.field}</td>
             <td>{item.old_value}</td>
             <td>{item.new_value}</td>
+            <td>
+              <div onClick={() => handleBookmark(item.id)}>
+                {bookmarks.includes(item.id) ? "*" : "-"}
+              </div>
+            </td>
           </tr>
         ))}
       </tbody>
