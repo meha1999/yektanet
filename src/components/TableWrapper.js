@@ -3,22 +3,18 @@ import React, { useEffect, useState } from "react";
 import thedata from "../data/data.json";
 import Bst from "../utils/bst";
 import Table from "./Table";
-import { useSearchParams  } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 const TableWrapper = () => {
+  let [URLSearchParams, setSearchParams] = useSearchParams({});
   const [data, setData] = useState(thedata);
   const [dateSearch, setDateSearch] = useState("");
   const [bstData, setBstData] = useState({});
 
-
-  let [URLSearchParams, setSearchParams] = useSearchParams({});
-
-  function handleSubmit() {
-    let params = { key: "ggggggggggggggggggggt" };
-    setSearchParams(params);
-  }
-  console.log(URLSearchParams.get("key"));
-
+  const handleSubmitUrl = (data, key) => {
+    !data ? URLSearchParams.delete(key) : URLSearchParams.set(key, data);
+    setSearchParams(URLSearchParams);
+  };
 
   const bst = new Bst();
 
@@ -27,21 +23,39 @@ const TableWrapper = () => {
   }, []);
 
   useEffect(() => {
-    dateSearch && setData(bst.find(dateSearch, bstData));
-    !dateSearch && setData(thedata);
+    if (dateSearch) {
+      setData(bst.find(dateSearch, bstData));
+      ["name", "title", "field"].map((item) => URLSearchParams.delete(item));
+      setSearchParams(URLSearchParams);
+    } else {
+     setData(thedata);
+    }
   }, [dateSearch]);
 
   useEffect(() => {
     bst.root && setBstData(bst.root);
   }, [bst.root]);
 
-  const handleSearchAll = (searchData, field) => {
-    setData(
-      data.filter((item) =>
-        item[field].toLowerCase().includes(searchData.toLowerCase())
-      )
+  const handleSearchAll = (searchData) => {
+    let finalData = [...thedata];
+    searchData.map(
+      (searchItem) =>
+        (finalData = finalData.filter((item) =>
+          item[searchItem]
+            .toLowerCase()
+            .includes(
+              URLSearchParams.get(searchItem)
+                ? URLSearchParams.get(searchItem)
+                : "".toLowerCase()
+            )
+        ))
     );
+    setData(finalData);
   };
+
+  useEffect(() => {
+    handleSearchAll(["name", "title", "field"]);
+  }, [URLSearchParams]);
 
   return (
     <div className="table-wrapper">
@@ -51,7 +65,8 @@ const TableWrapper = () => {
           <input
             type={"text"}
             id="name"
-            onChange={(e) => handleSearchAll(e.target.value, "name")}
+            value={URLSearchParams.get("name")}
+            onChange={(e) => handleSubmitUrl(e.target.value, "name")}
           />
         </div>
         <div className="input-sort">
@@ -59,6 +74,7 @@ const TableWrapper = () => {
           <input
             type={"text"}
             id="timestamp"
+            value={dateSearch}
             onChange={(e) => setDateSearch(e.target.value)}
           />
         </div>
@@ -67,7 +83,8 @@ const TableWrapper = () => {
           <input
             type={"text"}
             id="title"
-            onChange={(e) => handleSearchAll(e.target.value, "title")}
+            value={URLSearchParams.get("title")}
+            onChange={(e) => handleSubmitUrl(e.target.value, "title")}
           />
         </div>
         <div className="input-sort">
@@ -75,7 +92,8 @@ const TableWrapper = () => {
           <input
             type={"text"}
             id="field"
-            onChange={(e) => handleSearchAll(e.target.value, "field")}
+            value={URLSearchParams.get("field")}
+            onChange={(e) => handleSubmitUrl(e.target.value, "field")}
           />
         </div>
       </div>
