@@ -5,41 +5,110 @@
 table {
   font-family: arial, sans-serif;
   border-collapse: collapse;
-  width: 100%;
+  width: 98%;
+  margin: 10px;
+  background-color: #fff;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 th {
-  background-color: #b6e214;
+  background-color: rgba(254, 216, 19, 1);
   text-align: center;
-  border: 1px solid #a7a6a6;
   padding: 8px;
 }
 td {
-  border: 1px solid #a7a6a6;
   text-align: center;
   padding: 8px;
   margin: auto;
 }
 
-tr:nth-child(even) {
-  background-color: #dddddd;
+tr {
+  border: 1px solid #a7a6a6;
 }
+
 .table-wrapper {
   width: 100%;
   background-color: rgb(219, 216, 216);
   gap: 20px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
 }
-.table-wrapper .sorting-wrapper {
+.table-wrapper .sort-wrapper {
   display: flex;
   justify-content: space-around;
 }
-.table-wrapper .sorting-wrapper .input-sort {
+.table-wrapper .sort-wrapper .input-sort {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 10px;
 }
-.table-wrapper .sorting-wrapper .input-sort label {
+.table-wrapper .sort-wrapper .input-sort label {
   font-size: 11px;
+}
+
+.gg-arrow-up {
+  box-sizing: border-box;
+  position: relative;
+  display: block;
+  transform: scale(var(--ggs, 1));
+  width: 22px;
+  height: 22px;
+}
+.gg-arrow-up::after,
+.gg-arrow-up::before {
+  content: "";
+  display: block;
+  box-sizing: border-box;
+  position: absolute;
+  top: 4px;
+}
+.gg-arrow-up::after {
+  width: 8px;
+  height: 8px;
+  border-top: 2px solid;
+  border-left: 2px solid;
+  transform: rotate(45deg);
+  left: 7px;
+}
+.gg-arrow-up::before {
+  width: 2px;
+  height: 16px;
+  left: 10px;
+  background: currentColor;
+}
+
+.gg-arrow-down {
+  box-sizing: border-box;
+  position: relative;
+  display: block;
+  transform: scale(var(--ggs, 1));
+  width: 22px;
+  height: 22px;
+}
+.gg-arrow-down::after,
+.gg-arrow-down::before {
+  content: "";
+  display: block;
+  box-sizing: border-box;
+  position: absolute;
+  bottom: 4px;
+}
+.gg-arrow-down::after {
+  width: 8px;
+  height: 8px;
+  border-bottom: 2px solid;
+  border-left: 2px solid;
+  transform: rotate(-45deg);
+  left: 7px;
+}
+.gg-arrow-down::before {
+  width: 2px;
+  height: 16px;
+  left: 10px;
+  background: currentColor;
+}
+
+.th-wrapper {
+  display: flex;
 }

@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from "react";
-
-import thedata from "../data/data.json";
-import Bst from "../utils/bst";
-import Table from "./Table";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+
+import Table from "./Table";
+
+import Bst from "../utils/bst";
+import jsonData from "../data/data.json";
 
 const TableWrapper = () => {
   let [URLSearchParams, setSearchParams] = useSearchParams({});
-  const [data, setData] = useState(thedata);
+  const [data, setData] = useState(jsonData);
   const [dateSearch, setDateSearch] = useState("");
   const [bstData, setBstData] = useState({});
 
@@ -19,7 +20,7 @@ const TableWrapper = () => {
   const bst = new Bst();
 
   useEffect(() => {
-    thedata.map((item) => bst.insert(item));
+    jsonData.map((item) => bst.insert(item));
   }, []);
 
   useEffect(() => {
@@ -28,7 +29,7 @@ const TableWrapper = () => {
       ["name", "title", "field"].map((item) => URLSearchParams.delete(item));
       setSearchParams(URLSearchParams);
     } else {
-     setData(thedata);
+      setData(jsonData);
     }
   }, [dateSearch]);
 
@@ -36,8 +37,8 @@ const TableWrapper = () => {
     bst.root && setBstData(bst.root);
   }, [bst.root]);
 
-  const handleSearchAll = (searchData) => {
-    let finalData = [...thedata];
+  const handleSearchByFields = (searchData) => {
+    let finalData = [...jsonData];
     searchData.map(
       (searchItem) =>
         (finalData = finalData.filter((item) =>
@@ -54,12 +55,16 @@ const TableWrapper = () => {
   };
 
   useEffect(() => {
-    handleSearchAll(["name", "title", "field"]);
-  }, [URLSearchParams]);
+    handleSearchByFields(["name", "title", "field"]);
+  }, [
+    URLSearchParams.get("name"),
+    URLSearchParams.get("title"),
+    URLSearchParams.get("field"),
+  ]);
 
   return (
     <div className="table-wrapper">
-      <div className="sorting-wrapper">
+      <div className="sort-wrapper">
         <div className="input-sort">
           <label htmlFor="name">تام تغییر دهنده</label>
           <input
